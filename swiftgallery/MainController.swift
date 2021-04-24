@@ -7,46 +7,51 @@
 
 import UIKit
 
-class MainController: UIViewController{
+class MainController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
 
-    @IBOutlet weak var imageCollection: UICollectionView!
+    @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var topLabel: UILabel!
     @IBOutlet weak var buttonDogs: UIButton!
     @IBOutlet weak var buttonCats: UIButton!
     
-    @IBAction func btDogsClicked() {
+    @objc func btDogsClicked() {
         topLabel.text = "Dogs"
     }
     
-    @IBAction func btCatsClicked() {
+    @objc func btCatsClicked() {
         topLabel.text = "Cats"
     }
     
+    var items = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"]
+    
+    let reuseIdentifier = "dataCell"
     
     override func viewDidLoad() {
-        topLabel.text = "Simple Gallery"
-        
-        buttonDogs.addTarget(self, action: "btDogsClicked", for: .touchUpInside)
-        buttonCats.addTarget(self, action: "btCatsClicked", for: .touchUpInside)
-        
-//        imageCollection.
-        
+                
         super.viewDidLoad()
+        
+        self.collectionView.delegate = self
+        self.collectionView.dataSource = self
+        
+        self.collectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+  
+        self.buttonDogs.addTarget(self, action: #selector(btDogsClicked), for: .touchUpInside)
+        self.buttonCats.addTarget(self, action: #selector(btCatsClicked), for: .touchUpInside)
 
-        // Do any additional setup after loading the view.
     }
     
-
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.items.count
     }
-    */
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! CollectionViewCell
+
+       // cell.label.text = self.items[indexPath.row]
+        cell.backgroundColor = UIColor.red
+
+        return cell
+    }
 
 }

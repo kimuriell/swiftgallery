@@ -12,7 +12,7 @@
             <connections>
                 <outlet property="buttonCats" destination="LQu-nh-6ig" id="pIM-w8-ATZ"/>
                 <outlet property="buttonDogs" destination="LVx-Gc-Ovf" id="fcx-SU-P1A"/>
-                <outlet property="imageCollection" destination="W4O-8F-lZW" id="9FO-HP-XCN"/>
+                <outlet property="collectionView" destination="W4O-8F-lZW" id="9py-Vb-dC8"/>
                 <outlet property="topLabel" destination="mAm-RO-PLO" id="muF-Ji-ipk"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
