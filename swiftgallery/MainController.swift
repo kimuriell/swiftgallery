@@ -22,6 +22,10 @@ class MainController: UIViewController,
         let status: String
     }
     
+    struct CatJson: Codable {
+        let file: String
+    }
+    
     private func downloadData(fromURLString urlString: String,
                                completion: @escaping (Result<Data, Error>) -> Void)  {
         if let url = URL(string: urlString) {
@@ -35,7 +39,6 @@ class MainController: UIViewController,
                     }
                 }
             }
-
             urlSession.resume()
         }
     }
@@ -53,11 +56,24 @@ class MainController: UIViewController,
         return result
     }
     
+    private func parseCatJson(jsonData: Data) ->String {
+        var result : String = String()
+        
+        do {
+            let decodedData = try JSONDecoder().decode(CatJson.self, from: jsonData)
+            result = decodedData.file
+        } catch {
+            print("decode error")
+        }
+        
+        return result
+    }
+    
     @objc func btDogsClicked() {
         self.buttonDogs.tintColor = UIColor.systemBlue
         self.buttonCats.tintColor = UIColor.black
         
-        items = dogs
+        self.currentState = state.dogs
         collectionView.reloadData()
         
     }
@@ -66,7 +82,7 @@ class MainController: UIViewController,
         self.buttonDogs.tintColor = UIColor.black
         self.buttonCats.tintColor = UIColor.systemBlue
         
-        items = cats
+        self.currentState = state.cats
         collectionView.reloadData()
     }
     
@@ -74,16 +90,20 @@ class MainController: UIViewController,
     
     private var cats : Array<UIImage> = Array<UIImage>()
     private var dogs : Array<UIImage> = Array<UIImage>()
-
-    private var items : Array<UIImage> = Array<UIImage>()
     
     private func appendCat() {
-        self.downloadData(fromURLString: "https://cataas.com/c") { (result) in
+        self.downloadData(fromURLString: "https://aws.random.cat/meow") { (result) in
             switch result {
             case .success(let data):
-                self.cats.append(UIImage(data: data)!)
-            case .failure(let error):
-                print(error)
+                self.downloadData(fromURLString: self.parseCatJson(jsonData: data)) { (result) in
+                    switch result {
+                        case .success(let data):
+                            self.cats.append(UIImage(data: data)!)
+                            self.collectionView.reloadData()
+                        case .failure(_): break
+                    }
+                }
+            case .failure(_): break
             }
         }
     }
@@ -94,31 +114,28 @@ class MainController: UIViewController,
             case .success(let data): do {
                 self.downloadData(fromURLString: self.parseDogJson(jsonData: data)) { (result) in
                     switch result {
-                    case .success(let data):
-                        self.dogs.append(UIImage(data: data)!)
-                    case .failure(let error):
-                        print(error)
+                        case .success(let data):
+                            self.dogs.append(UIImage(data: data)!)
+                            self.collectionView.reloadData()
+                        case .failure(_): break
                     }
                 }
             }
-            case .failure(let error):
-                print(error)
+            case .failure(_): break
             }
         }
     }
     
+    enum state {
+        case cats
+        case dogs
+    }
+    
+    private var currentState = state.cats
     
     override func viewDidLoad() {
-        
-        for _ in 1...16 {
-            appendCat()
-            appendDog()
-        }
-        
-        items = cats
-        
         super.viewDidLoad()
-        
+                
         self.buttonDogs.tintColor = UIColor.black
         
         self.collectionView.delegate = self
@@ -128,6 +145,11 @@ class MainController: UIViewController,
   
         self.buttonDogs.addTarget(self, action: #selector(btDogsClicked), for: .touchDown)
         self.buttonCats.addTarget(self, action: #selector(btCatsClicked), for: .touchDown)
+        
+        for _ in 1...16 {
+            appendCat()
+            appendDog()
+        }
 
     }
     
@@ -137,15 +159,27 @@ class MainController: UIViewController,
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.items.count
+        switch currentState {
+        case state.cats:
+            return self.cats.count
+        case state.dogs:
+            return self.dogs.count
+        default:
+            return 0
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! ImageViewCell
         
-        cell.setImage(self.items[indexPath.item])
-
+        switch currentState {
+        case state.cats:
+            cell.setImage(self.cats[indexPath.item])
+        case state.dogs:
+            cell.setImage(self.dogs[indexPath.item])
+        }
+        
         cell.layer.borderWidth = 1
         cell.layer.cornerRadius = 18
 
