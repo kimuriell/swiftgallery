@@ -17,11 +17,47 @@ class MainController: UIViewController,
     @IBOutlet weak var buttonDogs: UIButton!
     @IBOutlet weak var buttonCats: UIButton!
     
+    struct DogJson: Codable {
+        let message: String
+        let status: String
+    }
+    
+    private func downloadData(fromURLString urlString: String,
+                               completion: @escaping (Result<Data, Error>) -> Void)  {
+        if let url = URL(string: urlString) {
+            let urlSession = URLSession.shared.dataTask(with: url) { [] (data, response, error) in
+                if let error = error {
+                    completion(.failure(error))
+                }
+                if let data = data {
+                    DispatchQueue.main.async {
+                        completion(.success(data))
+                    }
+                }
+            }
+
+            urlSession.resume()
+        }
+    }
+
+    private func parseDogJson(jsonData: Data) ->String {
+        var result : String = String()
+        
+        do {
+            let decodedData = try JSONDecoder().decode(DogJson.self, from: jsonData)
+            result = decodedData.message
+        } catch {
+            print("decode error")
+        }
+        
+        return result
+    }
+    
     @objc func btDogsClicked() {
         self.buttonDogs.tintColor = UIColor.systemBlue
         self.buttonCats.tintColor = UIColor.black
         
-        items = ["17", "18", "19", "20", "21"]
+        items = dogs
         collectionView.reloadData()
         
     }
@@ -30,18 +66,57 @@ class MainController: UIViewController,
         self.buttonDogs.tintColor = UIColor.black
         self.buttonCats.tintColor = UIColor.systemBlue
         
-        items = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"]
+        items = cats
         collectionView.reloadData()
-        
-//        let cell = collectionView.dequeueReusableCell(  (withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! CustomViewCell
     }
     
-    var items = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"]
+    private let reuseIdentifier = "dataCell"
     
-    let reuseIdentifier = "dataCell"
+    private var cats : Array<UIImage> = Array<UIImage>()
+    private var dogs : Array<UIImage> = Array<UIImage>()
+
+    private var items : Array<UIImage> = Array<UIImage>()
+    
+    private func appendCat() {
+        self.downloadData(fromURLString: "https://cataas.com/c") { (result) in
+            switch result {
+            case .success(let data):
+                self.cats.append(UIImage(data: data)!)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    private func appendDog() {
+        self.downloadData(fromURLString: "https://dog.ceo/api/breeds/image/random") { (result) in
+            switch result {
+            case .success(let data): do {
+                self.downloadData(fromURLString: self.parseDogJson(jsonData: data)) { (result) in
+                    switch result {
+                    case .success(let data):
+                        self.dogs.append(UIImage(data: data)!)
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+            }
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
     
     override func viewDidLoad() {
-                
+        
+        for _ in 1...16 {
+            appendCat()
+            appendDog()
+        }
+        
+        items = cats
+        
         super.viewDidLoad()
         
         self.buttonDogs.tintColor = UIColor.black
@@ -49,9 +124,7 @@ class MainController: UIViewController,
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         
-//        self.collectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        
-        self.collectionView.register(CustomViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        self.collectionView.register(ImageViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
   
         self.buttonDogs.addTarget(self, action: #selector(btDogsClicked), for: .touchDown)
         self.buttonCats.addTarget(self, action: #selector(btCatsClicked), for: .touchDown)
@@ -69,32 +142,26 @@ class MainController: UIViewController,
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! CustomViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! ImageViewCell
+        
+        cell.setImage(self.items[indexPath.item])
 
-        //cell.setLabel(self.items[indexPath.row])
-       // cell.textValue.text = "qwerty" //  self.items[indexPath.row]
-//        cell.label.text = self.items[indexPath.row]
-//        cell.label.textColor = UIColor.black
-        cell.setLabel(self.items[indexPath.row])
-//        cell.backgroundColor = UIColor.red
-        //cell.label.backgroundColor = .red
         cell.layer.borderWidth = 1
         cell.layer.cornerRadius = 18
-        
 
         return cell
     }
     
-    // change background color when user touches cell
+  
     func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath) as! CustomViewCell
-        cell.backgroundColor = UIColor.red
+//        let cell = collectionView.cellForItem(at: indexPath) as! ImageViewCell
+        
     }
 
-    // change background color back when user releases touch
+
     func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath) as! CustomViewCell
-        cell.backgroundColor = UIColor.white
+//        let cell = collectionView.cellForItem(at: indexPath) as! ImageViewCell
+        
     }
 
 }
