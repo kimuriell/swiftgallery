@@ -33,8 +33,7 @@
             </constraints>
             <size key="customSize" width="70" height="70"/>
             <connections>
-                <outlet property="label" destination="xiG-9S-jJy" id="qLt-JA-p4Y"/>
-                <outlet property="text" destination="xiG-9S-jJy" id="HBi-d6-3FD"/>
+                <outlet property="label" destination="xiG-9S-jJy" id="kzn-8F-yAZ"/>
             </connections>
             <point key="canvasLocation" x="68.115942028985515" y="84.375"/>
         </collectionViewCell>

@@ -23,7 +23,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="W4O-8F-lZW">
-                    <rect key="frame" x="0.0" y="114" width="414" height="748"/>
+                    <rect key="frame" x="20" y="114" width="374" height="748"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mqy-20-Fqa">
                         <size key="itemSize" width="128" height="128"/>
@@ -32,30 +32,34 @@
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
                 </collectionView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="TopLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mAm-RO-PLO">
-                    <rect key="frame" x="170" y="44" width="74" height="45"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="textColor"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PetWorld" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mAm-RO-PLO">
+                    <rect key="frame" x="0.0" y="49" width="414" height="40"/>
+                    <fontDescription key="fontDescription" name="SavoyeLetPlain" family="Savoye LET" pointSize="34"/>
+                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LQu-nh-6ig">
-                    <rect key="frame" x="27" y="76" width="32" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" title="Cats"/>
-                </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LVx-Gc-Ovf">
-                    <rect key="frame" x="79" y="76" width="36" height="30"/>
+                    <rect key="frame" x="83" y="71" width="52" height="42"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" name="BradleyHandITCTT-Bold" family="Bradley Hand" pointSize="24"/>
                     <state key="normal" title="Dogs"/>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LQu-nh-6ig">
+                    <rect key="frame" x="28" y="71" width="47" height="42"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" name="BradleyHandITCTT-Bold" family="Bradley Hand" pointSize="24"/>
+                    <state key="normal" title="Cats"/>
                 </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="W4O-8F-lZW" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="9Fl-8Q-I1S"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="W4O-8F-lZW" secondAttribute="trailing" id="FW7-W8-mE3"/>
+                <constraint firstItem="mAm-RO-PLO" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="7q2-qu-Qbu"/>
+                <constraint firstItem="W4O-8F-lZW" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="9Fl-8Q-I1S"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="W4O-8F-lZW" secondAttribute="trailing" constant="20" id="FW7-W8-mE3"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="W4O-8F-lZW" secondAttribute="bottom" id="Jfr-0e-7DR"/>
+                <constraint firstItem="mAm-RO-PLO" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="5" id="KOX-0v-4dU"/>
+                <constraint firstItem="mAm-RO-PLO" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="hnQ-dB-zU3"/>
                 <constraint firstItem="W4O-8F-lZW" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="70" id="kpz-re-Kvk"/>
             </constraints>
             <point key="canvasLocation" x="-197.10144927536234" y="93.75"/>
