@@ -21,11 +21,17 @@ class MainController: UIViewController,
         self.buttonDogs.tintColor = UIColor.systemBlue
         self.buttonCats.tintColor = UIColor.black
         
+        items = ["17", "18", "19", "20", "21"]
+        collectionView.reloadData()
+        
     }
     
     @objc func btCatsClicked() {
         self.buttonDogs.tintColor = UIColor.black
         self.buttonCats.tintColor = UIColor.systemBlue
+        
+        items = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"]
+        collectionView.reloadData()
         
 //        let cell = collectionView.dequeueReusableCell(  (withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! CustomViewCell
     }
@@ -82,15 +88,13 @@ class MainController: UIViewController,
     // change background color when user touches cell
     func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! CustomViewCell
-        cell.setLabel("cat")
         cell.backgroundColor = UIColor.red
     }
 
     // change background color back when user releases touch
     func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! CustomViewCell
-        cell.setLabel("dog")
-        cell.backgroundColor = UIColor.cyan
+        cell.backgroundColor = UIColor.white
     }
 
 }
