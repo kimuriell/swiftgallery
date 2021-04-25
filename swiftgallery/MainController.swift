@@ -49,9 +49,7 @@ class MainController: UIViewController,
         do {
             let decodedData = try JSONDecoder().decode(DogJson.self, from: jsonData)
             result = decodedData.message
-        } catch {
-            print("decode error")
-        }
+        } catch {}
         
         return result
     }
@@ -62,9 +60,7 @@ class MainController: UIViewController,
         do {
             let decodedData = try JSONDecoder().decode(CatJson.self, from: jsonData)
             result = decodedData.file
-        } catch {
-            print("decode error")
-        }
+        } catch {}
         
         return result
     }
@@ -99,7 +95,9 @@ class MainController: UIViewController,
                     switch result {
                         case .success(let data):
                             self.cats.append(UIImage(data: data)!)
-                            self.collectionView.reloadData()
+                            if self.currentState == state.cats {
+                                self.collectionView.reloadData()
+                            }
                         case .failure(_): break
                     }
                 }
@@ -116,7 +114,9 @@ class MainController: UIViewController,
                     switch result {
                         case .success(let data):
                             self.dogs.append(UIImage(data: data)!)
-                            self.collectionView.reloadData()
+                            if self.currentState == state.dogs {
+                                self.collectionView.reloadData()
+                            }
                         case .failure(_): break
                     }
                 }
@@ -164,9 +164,8 @@ class MainController: UIViewController,
             return self.cats.count
         case state.dogs:
             return self.dogs.count
-        default:
-            return 0
         }
+        return 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
