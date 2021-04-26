@@ -15,6 +15,7 @@
 		5258586B263421B300C41D9D /* swiftgalleryUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5258586A263421B300C41D9D /* swiftgalleryUITests.swift */; };
 		525858802634229700C41D9D /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5258587E2634229700C41D9D /* MainController.swift */; };
 		525858812634229700C41D9D /* MainController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5258587F2634229700C41D9D /* MainController.xib */; };
+		528614D126372CE700B00020 /* AnimationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528614D026372CE700B00020 /* AnimationEngine.swift */; };
 		52ED0D562635B008008A3061 /* ImageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52ED0D552635B008008A3061 /* ImageViewCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +51,7 @@
 		5258586C263421B300C41D9D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5258587E2634229700C41D9D /* MainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
 		5258587F2634229700C41D9D /* MainController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainController.xib; sourceTree = "<group>"; };
+		528614D026372CE700B00020 /* AnimationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationEngine.swift; sourceTree = "<group>"; };
 		52ED0D552635B008008A3061 /* ImageViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -109,6 +111,7 @@
 				52585853263421B300C41D9D /* LaunchScreen.storyboard */,
 				52585856263421B300C41D9D /* Info.plist */,
 				52ED0D552635B008008A3061 /* ImageViewCell.swift */,
+				528614D026372CE700B00020 /* AnimationEngine.swift */,
 			);
 			path = swiftgallery;
 			sourceTree = "<group>";
@@ -264,6 +267,7 @@
 				525858802634229700C41D9D /* MainController.swift in Sources */,
 				52585849263421AF00C41D9D /* AppDelegate.swift in Sources */,
 				52ED0D562635B008008A3061 /* ImageViewCell.swift in Sources */,
+				528614D126372CE700B00020 /* AnimationEngine.swift in Sources */,
 				5258584B263421AF00C41D9D /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

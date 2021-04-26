@@ -26,20 +26,20 @@ class MainController: UIViewController,
         let file: String
     }
     
-    private func downloadData(fromURLString urlString: String,
-                               completion: @escaping (Result<Data, Error>) -> Void)  {
+    func downloadData(from urlString: String, completionHandler: @escaping (_ data: Data?) -> ()) {
+        let session = URLSession.shared
+        
         if let url = URL(string: urlString) {
-            let urlSession = URLSession.shared.dataTask(with: url) { [] (data, response, error) in
-                if let error = error {
-                    completion(.failure(error))
-                }
-                if let data = data {
-                    DispatchQueue.main.async {
-                        completion(.success(data))
-                    }
+            let dataTask = session.dataTask(with: url) { (data, response, error) in
+                if error != nil {
+                    completionHandler(nil)
+                } else {
+                    completionHandler(data)
                 }
             }
-            urlSession.resume()
+            dataTask.resume()
+        } else {
+            completionHandler(nil)
         }
     }
 
@@ -69,6 +69,10 @@ class MainController: UIViewController,
         self.buttonDogs.tintColor = UIColor.systemBlue
         self.buttonCats.tintColor = UIColor.black
         
+        if self.currentState == state.dogs {
+          //  return
+        }
+        
         self.currentState = state.dogs
         collectionView.reloadData()
         
@@ -77,6 +81,10 @@ class MainController: UIViewController,
     @objc func btCatsClicked() {
         self.buttonDogs.tintColor = UIColor.black
         self.buttonCats.tintColor = UIColor.systemBlue
+        
+        if self.currentState == state.cats {
+            return
+        }
         
         self.currentState = state.cats
         collectionView.reloadData()
@@ -88,40 +96,39 @@ class MainController: UIViewController,
     private var dogs : Array<UIImage> = Array<UIImage>()
     
     private func appendCat() {
-        self.downloadData(fromURLString: "https://aws.random.cat/meow") { (result) in
-            switch result {
-            case .success(let data):
-                self.downloadData(fromURLString: self.parseCatJson(jsonData: data)) { (result) in
-                    switch result {
-                        case .success(let data):
-                            self.cats.append(UIImage(data: data)!)
-                            if self.currentState == state.cats {
-                                self.collectionView.reloadData()
+        self.downloadData(from: "https://aws.random.cat/meow"){ (imageUrl) in
+            if let data = imageUrl {
+                DispatchQueue.main.async {
+                    self.downloadData(from: self.parseCatJson(jsonData: data)){ (imageData) in
+                        if let data = imageData {
+                            DispatchQueue.main.async {
+                                self.cats.insert(UIImage(data: data)!, at: 0)
+                                if self.currentState == state.cats {
+                                    self.collectionView.reloadData()
+                                }
                             }
-                        case .failure(_): break
+                        }
                     }
                 }
-            case .failure(_): break
             }
         }
     }
     
     private func appendDog() {
-        self.downloadData(fromURLString: "https://dog.ceo/api/breeds/image/random") { (result) in
-            switch result {
-            case .success(let data): do {
-                self.downloadData(fromURLString: self.parseDogJson(jsonData: data)) { (result) in
-                    switch result {
-                        case .success(let data):
-                            self.dogs.append(UIImage(data: data)!)
-                            if self.currentState == state.dogs {
-                                self.collectionView.reloadData()
+        self.downloadData(from: "https://dog.ceo/api/breeds/image/random"){ (imageUrl) in
+            if let data = imageUrl {
+                DispatchQueue.main.async {
+                    self.downloadData(from: self.parseDogJson(jsonData: data)){ (imageData) in
+                        if let data = imageData {
+                            DispatchQueue.main.async {
+                                self.dogs.insert(UIImage(data: data)!, at: 0)
+                                if self.currentState == state.dogs {
+                                    self.collectionView.reloadData()
+                                }
                             }
-                        case .failure(_): break
+                        }
                     }
                 }
-            }
-            case .failure(_): break
             }
         }
     }
@@ -146,8 +153,12 @@ class MainController: UIViewController,
         self.buttonDogs.addTarget(self, action: #selector(btDogsClicked), for: .touchDown)
         self.buttonCats.addTarget(self, action: #selector(btCatsClicked), for: .touchDown)
         
-        for _ in 1...16 {
+        
+        for _ in 1...3 {
             appendCat()
+        }
+        
+        for _ in 1...7 {
             appendDog()
         }
 
@@ -171,18 +182,22 @@ class MainController: UIViewController,
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! ImageViewCell
-        
+
         switch currentState {
         case state.cats:
             cell.setImage(self.cats[indexPath.item])
         case state.dogs:
             cell.setImage(self.dogs[indexPath.item])
         }
-        
+
         cell.layer.borderWidth = 1
         cell.layer.cornerRadius = 18
 
-        return cell
+        UIView.animate(withDuration: 1, animations: {
+            AnimationEngine.slide(cell, Double(indexPath.item)*0.15)
+        })
+
+       return cell
     }
     
   
@@ -196,5 +211,4 @@ class MainController: UIViewController,
 //        let cell = collectionView.cellForItem(at: indexPath) as! ImageViewCell
         
     }
-
 }
