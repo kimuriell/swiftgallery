@@ -70,7 +70,7 @@ class MainController: UIViewController,
         self.buttonCats.tintColor = UIColor.black
         
         if self.currentState == state.dogs {
-          //  return
+            return
         }
         
         self.currentState = state.dogs
