@@ -8,7 +8,7 @@
 import UIKit
 
 class ImageViewCell: UICollectionViewCell {
-    private var imageView : UIImageView = UIImageView()
+    var imageView : UIImageView = UIImageView()
     
     func setImage(_ value:UIImage) {
         self.imageView.image = value
